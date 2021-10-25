@@ -415,15 +415,15 @@
   
 </li>
         
-      </ul>
-    </nav>
-  
-</li>
-        
           <li class="md-nav__item">
   <a href="#ovms-as-a-fuseml-managed-application" class="md-nav__link">
     OVMS as a FuseML Managed Application
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -690,15 +690,15 @@
   
 </li>
         
-      </ul>
-    </nav>
-  
-</li>
-        
           <li class="md-nav__item">
   <a href="#ovms-as-a-fuseml-managed-application" class="md-nav__link">
     OVMS as a FuseML Managed Application
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -897,7 +897,7 @@
 <p>in addition to the configuration change complication, models need to be uploaded directly in the storage backend used by the OVMS instance. This makes the OVMS predictor workflow step implementation a more complex, given that it would need to support and access the range of storage back-ends that can be configured with OVMS (S3, GCS, Azure or local storage).</p>
 </li>
 </ol>
-<h3 id="ovms-as-a-fuseml-managed-application">OVMS as a FuseML Managed Application</h3>
+<h4 id="ovms-as-a-fuseml-managed-application">OVMS as a FuseML Managed Application</h4>
 <p>In this scenario, the OVMS predictor workflow step itself is tasked with managing the entire lifecycle of a standalone OVMS instance that can serve one or more versions of the same model. OVMS instances created by predictor workflow steps are modeled and registered as FuseML Applications.</p>
 <p>The deployment of OVMS instances can be simplified somewhat by leveraging the OVMS kubernetes operator, which needs to be installed beforehand using a FuseML Installer Extension and registered with the Extension Registry. This approach is very similar to the one already used by other workflow predictor steps implemented for FuseML, such as KFServing and Seldon Core, with one notable difference: the OVMS operator does not cover setting up additional resources needed to expose the OVMS API outside the cluster, such as a Kubernetes ingress or Istio virtual service. These resources also need to be managed by the OVMS predictor step.</p>
 <p>The OVMS FuseML Installer Extension only needs to install the OVMS operator in a Kubernetes cluster, whereas the OVMS predictor workflow step is responsible for deploying OVMS CRD instances.</p>
