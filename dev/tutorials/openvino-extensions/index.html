@@ -1,0 +1,1055 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.4">
+    
+    
+      
+        <title>FuseML Extension Development Use-Case - OpenVINO - FuseML Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.db9e7362.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#4cae4f">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="green" data-md-color-accent="cyan">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#integrating-intel-openvino-with-fuseml" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FuseML Documentation" class="md-header__button md-logo" aria-label="FuseML Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FuseML Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              FuseML Extension Development Use-Case - OpenVINO
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/fuseml/fuseml/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FuseML Documentation" class="md-nav__button md-logo" aria-label="FuseML Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    FuseML Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/fuseml/fuseml/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/" class="md-nav__link">
+        Quick Start
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kfserving-basic/" class="md-nav__link">
+        Logistic Regression with MLFlow & KFServing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kfserving-triton-gpu/" class="md-nav__link">
+        Training & Serving ML Models on GPU with NVIDIA Triton
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          FuseML Extension Development Use-Case - OpenVINO
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        FuseML Extension Development Use-Case - OpenVINO
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fuseml-extensibility-options" class="md-nav__link">
+    FuseML Extensibility Options
+  </a>
+  
+    <nav class="md-nav" aria-label="FuseML Extensibility Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fuseml-installer-extensions" class="md-nav__link">
+    FuseML Installer Extensions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fuseml-extension-registry" class="md-nav__link">
+    FuseML Extension Registry
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fuseml-workflows" class="md-nav__link">
+    FuseML Workflows
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#openvino-overview" class="md-nav__link">
+    OpenVINO Overview
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fuseml-openvino-integration" class="md-nav__link">
+    FuseML OpenVINO Integration
+  </a>
+  
+    <nav class="md-nav" aria-label="FuseML OpenVINO Integration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#other-integration-ideas" class="md-nav__link">
+    Other Integration Ideas
+  </a>
+  
+    <nav class="md-nav" aria-label="Other Integration Ideas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#integration-through-3rd-parties" class="md-nav__link">
+    Integration Through 3rd Parties
+  </a>
+  
+    <nav class="md-nav" aria-label="Integration Through 3rd Parties">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#seldon-core" class="md-nav__link">
+    Seldon Core
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nvidia-triton" class="md-nav__link">
+    NVidia Triton
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ovms-fuseml-integration" class="md-nav__link">
+    OVMS FuseML Integration
+  </a>
+  
+    <nav class="md-nav" aria-label="OVMS FuseML Integration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ovms-as-an-external-service" class="md-nav__link">
+    OVMS as an External Service
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ovms-as-a-fuseml-managed-application" class="md-nav__link">
+    OVMS as a FuseML Managed Application
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openvino-model-converter-fuseml-integration" class="md-nav__link">
+    OpenVINO Model Converter FuseML Integration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#openvino-extensions-implementation" class="md-nav__link">
+    OpenVINO Extensions Implementation
+  </a>
+  
+    <nav class="md-nav" aria-label="OpenVINO Extensions Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fuseml-installer-extension-for-ovms-operator" class="md-nav__link">
+    FuseML Installer Extension for OVMS Operator
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fuseml-ovms-predictor-step" class="md-nav__link">
+    FuseML OVMS Predictor Step
+  </a>
+  
+    <nav class="md-nav" aria-label="FuseML OVMS Predictor Step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#update-strategy" class="md-nav__link">
+    Update strategy
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fuseml-openvino-model-converter-step" class="md-nav__link">
+    FuseML OpenVINO Model Converter Step
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-references" class="md-nav__link">
+    Additional References
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        Architecture
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/" class="md-nav__link">
+        API Reference
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/" class="md-nav__link">
+        CLI Reference
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CONTRIBUTING/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fuseml-extensibility-options" class="md-nav__link">
+    FuseML Extensibility Options
+  </a>
+  
+    <nav class="md-nav" aria-label="FuseML Extensibility Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fuseml-installer-extensions" class="md-nav__link">
+    FuseML Installer Extensions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fuseml-extension-registry" class="md-nav__link">
+    FuseML Extension Registry
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fuseml-workflows" class="md-nav__link">
+    FuseML Workflows
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#openvino-overview" class="md-nav__link">
+    OpenVINO Overview
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fuseml-openvino-integration" class="md-nav__link">
+    FuseML OpenVINO Integration
+  </a>
+  
+    <nav class="md-nav" aria-label="FuseML OpenVINO Integration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#other-integration-ideas" class="md-nav__link">
+    Other Integration Ideas
+  </a>
+  
+    <nav class="md-nav" aria-label="Other Integration Ideas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#integration-through-3rd-parties" class="md-nav__link">
+    Integration Through 3rd Parties
+  </a>
+  
+    <nav class="md-nav" aria-label="Integration Through 3rd Parties">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#seldon-core" class="md-nav__link">
+    Seldon Core
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nvidia-triton" class="md-nav__link">
+    NVidia Triton
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ovms-fuseml-integration" class="md-nav__link">
+    OVMS FuseML Integration
+  </a>
+  
+    <nav class="md-nav" aria-label="OVMS FuseML Integration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ovms-as-an-external-service" class="md-nav__link">
+    OVMS as an External Service
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ovms-as-a-fuseml-managed-application" class="md-nav__link">
+    OVMS as a FuseML Managed Application
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openvino-model-converter-fuseml-integration" class="md-nav__link">
+    OpenVINO Model Converter FuseML Integration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#openvino-extensions-implementation" class="md-nav__link">
+    OpenVINO Extensions Implementation
+  </a>
+  
+    <nav class="md-nav" aria-label="OpenVINO Extensions Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fuseml-installer-extension-for-ovms-operator" class="md-nav__link">
+    FuseML Installer Extension for OVMS Operator
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fuseml-ovms-predictor-step" class="md-nav__link">
+    FuseML OVMS Predictor Step
+  </a>
+  
+    <nav class="md-nav" aria-label="FuseML OVMS Predictor Step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#update-strategy" class="md-nav__link">
+    Update strategy
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fuseml-openvino-model-converter-step" class="md-nav__link">
+    FuseML OpenVINO Model Converter Step
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-references" class="md-nav__link">
+    Additional References
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/fuseml/docs/edit/main/docs/tutorials/openvino-extensions.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="integrating-intel-openvino-with-fuseml">Integrating Intel OpenVINO with FuseML</h1>
+<p>FuseML features a range of extensibility mechanisms aimed at integrating various 3rd party AI/ML tools into a single and coherent MLOps tool stack, on top of which reusable MLOps recipes can be configured to automate the end-to-end ML production workflows.</p>
+<p>This tutorial is meant as a typical example of the process required to integrate an existing AI/ML service, framework or platform with FuseML. The particular integration target featured in this guide is Intel OpenVINO and its collection of components. The guide outlines the decisions that were made concerning which OpenVINO components can be integrated with FuseML, and provides details about the actual implementation of FuseML extensions integrating OpenVINO functions into FuseML workflows.</p>
+<p>The guide is structured in the following sections:
+* <a href="#fuseml-extensibility-options">a summary of the extensibility features provided by FuseML</a>
+* <a href="#openvino-overview">a high level presentation of OpenVINO components</a> and their role in the MLOps landscape
+* notes on the potential strategies used to <a href="#fuseml-openvino-integration">integrate OpenVINO components into FuseML</a>
+* details on the actual <a href="#openvino-extensions-implementation">implementation of FuseML extensions for OpenVINO</a></p>
+<h2 id="fuseml-extensibility-options">FuseML Extensibility Options</h2>
+<p>FuseML currently supports three major extension mechanisms that facilitate the integration of new AI/ML tools without the need to change the FuseML core code: <em>FuseML Installer Extensions</em>, the <em>FuseML Extension Registry</em> and <em>FuseML Workflows</em>.</p>
+<h3 id="fuseml-installer-extensions">FuseML Installer Extensions</h3>
+<p>The FuseML installer can be tasked with installing more than just the FuseML core components. It can also be used to simplify the deployment of 3rd party AI/ML services that support Kubernetes as a target platform. Writing a FuseML Installer Extension is as simple as creating a YAML file describing installation steps such as helm charts, kubernetes manifests, kustomize targets or even plain bash scripts.</p>
+<p>With FuseML Installer Extensions, users can build installation shortcuts to quickly deploy their own AI/ML tool stack, or reuse one or more of the AI/ML tools already featured in the default <a href="https://github.com/fuseml/extensions/tree/main/installer">FuseML Installer Extension Repository</a>, including but not limited to: MLFlow, KFServing and Seldon Core.</p>
+<p>The <a href="https://github.com/fuseml/fuseml/blob/main/docs/blueprints/001-installation-of-extensions.md">Installation of ML Extensions</a> blueprint has detailed information about this feature and how it can be used to extend the installer to cover additional AI/ML tools and services.</p>
+<h3 id="fuseml-extension-registry">FuseML Extension Registry</h3>
+<p>The FuseML Extension Registry is basically a database storing information about external AI/ML services and APIs that can be consumed in FuseML workflows. Specifically, each entry in the Extension Registry represents a particular instance of an external AI/ML service or API, and contains information about how it can be accessed (e.g. URLs, endpoints, client configuration and credentials) as well as what specialized roles it can play in the MLOps reference architecture (e.g. data store, model store, prediction platform, experiment tracking, distributed model training etc.).</p>
+<p>Registering AI/ML services and APIs with the FuseML Extension Registry allows them to be discovered, accessed and consumed in FuseML workflows. This approach decouples FuseML workflows from the actual back-ends used to execute individual steps and enables users to configure MLOps workflows that are portable and reusable. The Extension Registry API is flexible enough to allow FuseML admins to register any 3rd party AI/ML tool. In addition, <a href="#fuseml-installer-extensions">FusemML Installer Extensions</a> can be used not only to install AI/ML tools, but also to automatically register them with the FuseML Extension Registry.</p>
+<p>The <a href="https://github.com/fuseml/fuseml/blob/main/docs/blueprints/003-extension-registry.md">Extension Registry</a> blueprint covers detailed information about this extensibility mechanism.</p>
+<h3 id="fuseml-workflows">FuseML Workflows</h3>
+<p>FuseML workflows are automation processes that bring everything together. </p>
+<h2 id="openvino-overview">OpenVINO Overview</h2>
+<p>OpenVINO consists of the following high level conceptual components that are of interest from an MLOps perspective:</p>
+<ul>
+<li>
+<p>Intermediate Representation (IR): an open source, nGraph-compatible ML model format that has been optimized for Intel architecture and is usable by the Intel Inference Engine.</p>
+</li>
+<li>
+<p>Inference Engine: a selection of software libraries that run inference against the Intermediate Representation (optimized model) to produce inference results.</p>
+</li>
+<li>
+<p>Model Optimizer: a cross-platform command-line tool that converts a trained neural network from its source framework to an Intermediate Representation (IR) for use in inference operations. The Model Optimizer imports models trained in popular frameworks such as Caffe, TensorFlow, MXNet, Kaldi, and ONNX and performs a few optimizations to remove excess layers and group operations when possible into simpler, faster graphs.</p>
+</li>
+<li>
+<p>OpenVINO Model Server (OVMS): a scalable, high-performance solution for serving machine learning models optimized for Intel architectures. The OVMS server implements a gRPC and REST API framework with data serialization and deserialization using TensorFlow Serving API, and OpenVINO as the inference execution provider. Model repositories may reside on a locally accessible file system (e.g. NFS), Google Cloud Storage (GCS), Amazon S3, Minio or Azure Blob Storage.</p>
+</li>
+<li>
+<p>Open Model Zoo: a repository of optimized pre-trained deep learning models</p>
+</li>
+<li>
+<p>Model Downloader: a utility that can be used to download models from the Open Model Zoo.</p>
+</li>
+<li>
+<p>OpenVINO Training Extensions: provide a convenient environment to train Deep Learning models and convert them using the OpenVINO toolkit for optimized inference.</p>
+</li>
+<li>
+<p>DL Workbench: a platform built upon OpenVINO that provides a web-based graphical environment that enables you to optimize, fine-tune, analyze, visualize, and compare performance of deep learning models on various Intel architecture configurations. In the DL Workbench, you can use most of OpenVINO's toolkit components.</p>
+</li>
+<li>
+<p><a href="https://github.com/openvinotoolkit/docker_ci/tree/master/dockerfiles">DockerHub CI for OpenVINO</a>: a toolkit used to generate a Dockerfile, build, test, and deploy an image with the Intel Distribution of OpenVINO toolkit. You can reuse available Dockerfiles, add your layer, and customize the image of OpenVINO for your needs.</p>
+</li>
+</ul>
+<h2 id="fuseml-openvino-integration">FuseML OpenVINO Integration</h2>
+<p>The OpenVINO components that could be of immediate and obvious use in FuseML MLOps workflows are the OpenVINO Model Server and the Model Optimizer. The main goal of the integration is to be able to use the OpenVINO Model Server as a predictor step in FuseML workflows. This should also be coupled with an installer extension that can be used to install any Kubernetes prerequisites through the fuseml-installer.</p>
+<p>Having an OVMS server instance that is able to serve a single model (e.g. the output of a training workflow step) is the main use-case target. Serving multiple versions of the same model or even serving multiple different models at the same time is also supported by OVMS.</p>
+<p>Given that OVMS only works with models that are in Intermediate Representation format and also require a particular folder structure, a conversion operation is required to support serving models that are trained and saved using other formats. This is where the Model Optimizer component comes in.</p>
+<p>To summarize, the following are needed for a minimal integration of OpenVINO as a FuseML model serving component:</p>
+<ul>
+<li>an <em>OVMS predictor</em> FuseML workflow step, similar to the other predictor steps already featured for KFServing and Seldon Core, that can deploy and serve a ML model inside an OVMS instance</li>
+<li>an <em>OVMS converter</em> FuseML workflow step is also required to perform the conversion and optimization of ML models from other formats (e.g. TensorFlow saved_model or ONNX) to the IR representation required by OVMS. This conversion logic could be part of the predictor step, but a separation in two individual steps has more advantages, such as better reusability and observability</li>
+<li>a FuseML installer extension that creates the necessary Kubernetes set up required to run the OVMS and the Model Optimizer. These help reduce or even elliminate the effort required to install OpenVINO prerequisites.</li>
+</ul>
+<h3 id="other-integration-ideas">Other Integration Ideas</h3>
+<p>Other possible integration variants that are not part of this exercise are only mentioned here for the sake of completion and to pave the way towards future improvements.</p>
+<ol>
+<li>
+<p>Since the OpenVINO DL Workbench is essentially a web front-end built on top of most of the other OpenVINO components, such as the Model Optimizer and Model Zoo, it can play the role of ML experiment tracker. However, consuming the various services provided by the DL Workbench in FuseML workflows is hindered by the fact that the DL Workbench doesn't expose a programmable API. With such an API present, OpenVINO enabled FuseML workflow steps like the OVMS converter could perform various ML operations through the DL Workbench and have all results immediately visible and accessible through the DL Workbench web UI. Another purpose for including the DL Workbench in the FuseML orchestrated tool stack is being able to train and prepare ML models through the DL Workbench and then have the option to export and consume those ML models as FuseML workflow inputs (e.g. to serve them with an OVMS predictor workflow). A FuseML installer extension should also be provided to simplify the installation of DL Workbench instances in a Kubernetes cluster.</p>
+</li>
+<li>
+<p>The Open Model Zoo and Model Downloader components can be leveraged to bring pre-trained OpenVINO ML models into FuseML workflows, for use in further training and/or serving operations</p>
+</li>
+<li>
+<p>Custom FuseML workflow training steps can be implemented to use the OpenVINO Training Extensions</p>
+</li>
+<li>
+<p>ML applications can be implemented directly against the OpenVINO IR libraries. FuseML could facilitate the development of such applications through builder workflow steps targeted specifically at simplifying building and packaging IR powered code.  </p>
+</li>
+</ol>
+<h4 id="integration-through-3rd-parties">Integration Through 3rd Parties</h4>
+<p>There exist a couple of 3rd party inference platforms that already include support for OpenVINO ML models.</p>
+<h5 id="seldon-core">Seldon Core</h5>
+<p>Since OVMS implements the same API as TensorFlow Serving, Seldon Core can run an OVMS container alongside the tfserving-proxy container normally used to serve models with TFServing (since they implement the same API). Seldon Core also runs a storage initializer init container (from KFServing) that initializes the model store format required for OVMS.</p>
+<p>Seldon Core is already included in the list of extensions available for FuseML. Theoretically, it can easily be enhanced to include the OpenVINO back-end as a supported option.</p>
+<p>More information:
+* <a href="https://docs.seldon.io/projects/seldon-core/en/latest/servers/kfserving-storage-initializer.html">KFServing storage initializer</a>
+* <a href="https://github.com/SeldonIO/seldon-core/tree/master/examples/models/openvino">Seldon Core OpenVINO sample/tutorial</a>
+* <a href="https://github.com/SeldonIO/seldon-core/tree/master/helm-charts/seldon-openvino">Seldon Core OpenVINO example resource</a></p>
+<h5 id="nvidia-triton">NVidia Triton</h5>
+<p>Triton allows custom backends in C++ and Python to be integrated easily. As part of the 21.03 release, a beta version of the OpenVINO backend in Triton is available for high performance CPU inferencing on the Intel platform.</p>
+<p>Triton is also featured as one of the predictors supported by KFServing, for which FuseML already provides a workflow predictor step. The KFServing workflow predictor step can be extended to include Triton+OpenVINO as a supported combo.</p>
+<p>More information:
+* <a href="https://github.com/triton-inference-server/backend">Triton Inference Backends</a>
+* <a href="https://github.com/triton-inference-server/openvino_backend">Triton OpenVINO Backend</a></p>
+<h3 id="ovms-fuseml-integration">OVMS FuseML Integration</h3>
+<p>Understanding how a 3rd party AI/ML service can be installed and how its APIs can be accessed and consumed is a very important aspect of developing FuseML extensions that integrate with it. This is relevant not only from the point of view of creating FuseML Installer Extensions that can simplify the deployment of 3rd party AI/ML services, but also from the perspective of implementing FuseML workflow steps capable of interacting with them or even of managing their lifecycle.</p>
+<p>The simplest of the installation methods available for OVMS is through a Docker container image. OVMS also features a <a href="https://github.com/openvinotoolkit/model_server/tree/v2021.3/deploy">helm chart</a> that deploys an OVMS instance in a Kubernetes cluster.</p>
+<p>Finally, the installation method that is most interesting from a FuseML integration perspective is the <a href="https://github.com/openvinotoolkit/model_server/tree/main/extras/ovms-operator">OVMS operator</a>. It is based on the OVMS helm chart and implemented using the k8s helm operator SDK, meaning:
+* the attributes in the OVMS CRD correspond almost 1-to-1 to those present in the helm chart's <code>values.yaml</code>
+* every OVMS instance deployed by the operator has the same characteristics as an OVMS instance deployed via the helm chart</p>
+<p>Another equally important aspect is exploring the capabilities that the 3rd pary AI/ML service provides in terms of configuration and programmable APIs, especially those involving well known types of AI/ML artifacts and operations, such as ML models, datasets, metrics, training, validation, inference and so on. A single OVMS instance can serve multiple versions of the same model, as well as different models. This makes possible at least two different integration variants covered in more detail in the sections that follow: <a href="#ovms-as-an-external-service">OVMS as an External Service</a> and <a href="#ovms-as-a-fuseml-managed-application">OVMS as a FuseML Managed Application</a>.</p>
+<h4 id="ovms-as-an-external-service">OVMS as an External Service</h4>
+<p>This option looks at OVMS primarily as an external 3rd party AI/ML tool that is installed and managed separately from FuseML. In this scenario, existing OVMS instances need to be registered in the Extension Registry as individual FuseML extensions. A FuseML Installer Extension can even be implemented to install and register an OVMS instance automatically (i.e. through its helm chart or operator). The OVMS instance(s) registered with the FuseML Extension Registry can then be referenced as prerequisites by the OVMS predictor FuseML workflow step. The only think the OVMS predictor workflow step would need to do is to update the external OVMS instance(s) to host the ML model received as input.</p>
+<p>In this integration variant, the same OVMS instance <em>may be shared by multiple workflows to serve different ML models</em>. This is especially useful in situations where a single OVMS instance is using a large pool of hardware resources (CPUs/GPUs) that can be utilized more efficiently when shared by multiple ML models instead of being dedicated to a single model.</p>
+<p>Unfortunately, implementing this integration scenario is difficult for two main reasons explained below:</p>
+<ol>
+<li>
+<p>the FuseML <em>OVMS predictor</em> workflow step implementation needs a way to "upload" new models and new model versions to a remote OVMS instance that may or may not be managed by FuseML. Given that the official OVMS REST API doesn't provide an "upload model" operation, the only way to achieve that is by accessing its storage backend. OVMS has the ability to periodically reload the models in the model repository, so it should be possible to update the models being served by an OVMS instance by simply updating the models in its storage back-end. However, this only works for providing new versions of the models that are already being served. Instructing the OVMS instance to serve <em>new</em> models <a href="https://github.com/openvinotoolkit/model_server/blob/6803f875950cf7626bd1d78af5c93130302ebc5f/deploy/README.md#deploy-openvino-model-server-with-multiple-models-defined-in-a-configuration-file">requires a configuration change</a>. In the context of integrating OVMS instances that are not installed through nor managed by FuseML, it is more difficult to make assumptions about how configuration changes can be made. Even though <a href="https://github.com/openvinotoolkit/model_server/blob/main/docs/docker_container.md#updating-configuration-file">the model store configuration is also periodically reloaded</a>, its location might not be easily accessible without a programmable API.</p>
+</li>
+<li>
+<p>in addition to the configuration change complication, models need to be uploaded directly in the storage backend used by the OVMS instance. This makes the OVMS predictor workflow step implementation a more complex, given that it would need to support and access the range of storage back-ends that can be configured with OVMS (S3, GCS, Azure or local storage).</p>
+</li>
+</ol>
+<h3 id="ovms-as-a-fuseml-managed-application">OVMS as a FuseML Managed Application</h3>
+<p>In this scenario, the OVMS predictor workflow step itself is tasked with managing the entire lifecycle of a standalone OVMS instance that can serve one or more versions of the same model. OVMS instances created by predictor workflow steps are modeled and registered as FuseML Applications.</p>
+<p>The deployment of OVMS instances can be simplified somewhat by leveraging the OVMS kubernetes operator, which needs to be installed beforehand using a FuseML Installer Extension and registered with the Extension Registry. This approach is very similar to the one already used by other workflow predictor steps implemented for FuseML, such as KFServing and Seldon Core, with one notable difference: the OVMS operator does not cover setting up additional resources needed to expose the OVMS API outside the cluster, such as a Kubernetes ingress or Istio virtual service. These resources also need to be managed by the OVMS predictor step.</p>
+<p>The OVMS FuseML Installer Extension only needs to install the OVMS operator in a Kubernetes cluster, whereas the OVMS predictor workflow step is responsible for deploying OVMS CRD instances.</p>
+<p>OVMS exposes two APIs: gRPC and RESTful API. They do not include authorization, authentication, or data encryption. These APIs are based on the <a href="https://www.tensorflow.org/tfx/serving/api_rest">TensorFlow Serving APIs</a>.</p>
+<h3 id="openvino-model-converter-fuseml-integration">OpenVINO Model Converter FuseML Integration</h3>
+<p>The ML models served with the OpenVINO Model Server must be in Intermediate Representation (IR) format (where the graph is represented in .bin and .xml format). The Intermediate Representation is an Intel specific format (more details <a href="https://docs.openvinotoolkit.org/latest/openvino_docs_MO_DG_IR_and_opsets.html">here</a>).</p>
+<p>Tensorflow, Caffe, MXNet and ONNX trained models can be converted to IR format using the <a href="https://docs.openvinotoolkit.org/latest/openvino_docs_MO_DG_Deep_Learning_Model_Optimizer_DevGuide.html">Model Optimizer</a> available from the OpenVINO toolkit.</p>
+<p>The OpenVINO Model Server requires the models to be present in the local filesystem or they could be hosted remotely on object storage services. Google Cloud, S3 and Azure compatible storage are supported.</p>
+<p>Regardless of location, the model files need to follow a particular directory structure. More information on the Model Repository can be found <a href="https://github.com/openvinotoolkit/model_server/blob/main/docs/models_repository.md">here</a>.</p>
+<h2 id="openvino-extensions-implementation">OpenVINO Extensions Implementation</h2>
+<p>This section contains some more details regarding the implementation of the OpenVINO FuseML extensions. The actual implementation is already available in the FuseML repositories:</p>
+<ul>
+<li><a href="https://github.com/fuseml/extensions/tree/main/installer/ovms">the FuseML Installer Extension for the OVMS Operator</a></li>
+<li><a href="https://github.com/fuseml/extensions/tree/main/images/inference-services/ovms">the container image implementing the OVMS predictor step</a></li>
+<li><a href="https://github.com/fuseml/extensions/tree/main/images/converters/ovms">the container image implementing the OpenVINO Model Converter step</a></li>
+<li><a href="https://github.com/fuseml/examples/blob/main/workflows/mlflow-ovms-e2e.yaml">example end-to-end workflow definition</a> that trains a TensorFlow/Keras model with MLFlow, then converts and serves it with the workflow steps listed above </li>
+</ul>
+<h3 id="fuseml-installer-extension-for-ovms-operator">FuseML Installer Extension for OVMS Operator</h3>
+<p>The <a href="https://operatorhub.io/operator/ovms-operator">official OVMS operator</a> can only be installed with the <a href="https://olm.operatorframework.io/">Operator Lifecycle Manager (OLM)</a>. However, to keep things simple, this implementation uses a Kustomize deployment that can be used to install the OVMS Kubernetes operator that can be tracked down to <a href="https://github.com/openvinotoolkit/model_server/tree/main/extras/ovms-operator">this repository</a>.</p>
+<h3 id="fuseml-ovms-predictor-step">FuseML OVMS Predictor Step</h3>
+<p>In its simplest form, the FuseML OVMS predictor workflow step should take in as input the location of a ML model, deploy an OVMS instance that serves that model and output the URL where the OVMS server instance can be accessed to perform inference requests. The input model can come from a training workflow step that precedes the OVMS predictor step. Theoretically, it can also be provided as a codeset input or a workflow step parameter. However, FuseML currently has a limitation that prevents a workflow from being executed unless it is assigned to a codeset.</p>
+<p>The OVMS workflow extension should also support providing <em>several models</em> as input, stored in the same location and organized in the form of an <a href="https://github.com/openvinotoolkit/model_server/blob/main/docs/models_repository.md">OVMS model repository</a>. Similarly to the single model case, this location could be provided as a parameter or a codeset input.</p>
+<p>OVMS itself already has support for <a href="https://github.com/openvinotoolkit/model_server/blob/main/deploy/README.md#model-repository">a range of remote ML model storage options</a> (GCS, S3, Azure). The OVMS workflow extension doesn't need to implement any additional logic to download models locally. However, depending on the storage service provider, it may need to configure secrets to store access credentials.</p>
+<p>The OVMS operator supports models to be loaded from a local path mounted from a k8s volume. This allows ML models to be loaded from other types of storage services not natively supported by OVMS, as long as the FuseML framework or the workflow itself provides the logic necessary to download the models into a volume.</p>
+<p>Examples of use-cases for local path:
+* models could be provided as a codeset input, the contents of which are downloaded into a volume and mounted automatically by the FuseML framework. 
+* models could be downloaded locally from the <a href="https://storage.openvinotoolkit.org/repositories/open_model_zoo/2021.3/models_bin">OpenVINO Model Zoo</a> in a separate workflow step and passed as input to the OVMS predictor step (e.g. through a persistent volume or shared workspace).</p>
+<p>For the scenario where the OVMS instance is using a model repository created by a step in the same workflow preceding the predictor step, the Tekton workspace mechanism can be leveraged: a PVC created by Tekton and used to persist information across pipeline steps. The trick is to mount the PVC as read-only to no trigger the ReadWriteMany mode limitation that most storage classes have. Luckily, this is exactly how the OVMS operator and helm chart are mounting the PVC supplied as argument.   </p>
+<p>The OVMS predictor workflow step should accept a set of inputs/parameters covering a subset of the <a href="https://github.com/openvinotoolkit/model_server/blob/main/deploy/README.md#helm-options-references">available options that can be configured for the OVMS instance</a> itself:
+* number of replicas (NOTE: this probably doesn't work with models mounted from local volumes unless the volume can be shared)
+* model_name (default can be inferred from codeset+workflow). Not applicable if multiple models are served
+* model_path pointing to a single model. Can be inferred from the input type (i.e. codeset) or provided as a URL parameter
+* model_config_path pointing to a configuration used to serve multiple models
+* model_version_policy - determines how many model versions are served at the same time (only if multi-version serving is possible)
+* model inference parameters:
+  * stateful, nireq, batch_size
+  * plugin_config
+  * target_device - needs to be coupled with a k8s resource specifier
+  * log_level
+* storage credentials attributes (S3/AWS, GCP, Azure) can be stored in the FuseML Extension Registry and retrieved using workflow extension requirements</p>
+<p>As is the case with all prediction services, the OVMS server needs to be exposed to allow its inference APIs to be consumed from outside the cluster. The OVMS predictor workflow step also needs to take care of that. As a side note, ideally, this should be delegated to a library or outside service that can perform these tasks independently of workflow steps and in a centralized manner. This would avoid duplication and also simplify the workflow steps implementation as they would no longer have to be aware of technologies such as ingresses and service mesh.</p>
+<p>In the absence of such a library or service, the OVMS predictor step needs to configure an ingress or a virtual service to expose the OVMS server. </p>
+<p>Given that currenly the only solution supported by FuseML is Istio, it is also the best choice for this task. Two individual parts are needed for this:
+* an Istio Gateway configured globally, that fits a host wildcard able to accommodate all hostnames of all OVMS deployments
+* one virtual service per OVMS instance</p>
+<p>The gateway can be configured as part of the OVMS operator extension installation. The OVMS predictor step needs to take care of the virtual service.</p>
+<p>TODO: k8s Permissions</p>
+<h4 id="update-strategy">Update strategy</h4>
+<p>This section covers updating an existing OVMS instance (i.e. when the same workflow is executed multiple times).</p>
+<p>OVMS is capable of auto-detecting changes in the model repository and configuration. If an update means that a new model version is added to the model storage, or a new model is added to the model repository (in case of a multiple model scenario) nothing else needs to be done. All other changes require a re-deployment of the OVMS kubernetes resource which will trigger a rolling update or a scale-out/in (when the replica count parameter is changes).</p>
+<h3 id="fuseml-openvino-model-converter-step">FuseML OpenVINO Model Converter Step</h3>
+<p>This step is required to convert models to the OpenVINO supported formats (IR) and required model repository file structure.</p>
+<p>The container image required for this workflow step can be constructed using a prebuilt OpenVINO toolkit container image (~6GB in size, out of which 4GB are python packages for AI/ML) or <a href="https://docs.openvinotoolkit.org/latest/openvino_docs_install_guides_installing_openvino_docker_linux.html">building a custom image</a>. For the sake of simplicity and to reduce technical debt, the former is used: the official OpenVINO toolkit container image is used as a base image and some additional software package requirements are installed on top.</p>
+<p>The conversion procedure <a href="https://docs.openvinotoolkit.org/latest/openvino_docs_MO_DG_prepare_model_convert_model_Converting_Model.html">is different depending on the type of input model</a>. </p>
+<h2 id="additional-references">Additional References</h2>
+<ul>
+<li>https://docs.openvinotoolkit.org/latest/index.html</li>
+<li>https://docs.openvinotoolkit.org/latest/openvino_docs_IE_DG_Deep_Learning_Inference_Engine_DevGuide.html</li>
+<li>https://docs.openvinotoolkit.org/latest/openvino_docs_ovms.html</li>
+<li>https://github.com/openvinotoolkit/model_server</li>
+<li>https://github.com/openvinotoolkit/model_server/blob/main/docs/ovms_quickstart.md</li>
+<li>https://github.com/openvinotoolkit/model_server/blob/main/docs/architecture.md</li>
+</ul>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../kfserving-triton-gpu/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Training &amp; Serving ML Models on GPU with NVIDIA Triton" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Training & Serving ML Models on GPU with NVIDIA Triton
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../../architecture/" class="md-footer__link md-footer__link--next" aria-label="Next: Architecture" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Architecture
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2021 FuseML Author(s)
+          </div>
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.8397ff9e.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.1e84347e.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>
