@@ -758,10 +758,6 @@ sudo cp fuseml /usr/local/bin
 +--------------+-----------------------+---------+------+-------------------------------+-------------------------------------------+----------------------------+
 </code></pre></div>
 <h2 id="training-serving-the-model">Training &amp; Serving the Model</h2>
-<p>As GPU is usually a limited and costly resource, instead of testing/developing the model using a GPU it might
-make sense to validate the model first on CPU with a minimum training configuration (small dataset, small number
-of epochs, batch size, etc). To do that we will run a FuseML workflow that will train the model and serve it on
-CPU. This will also enable us to compare CPU and GPU performance during the training.</p>
 <p>We will be training a
 <a href="https://developers.google.com/machine-learning/glossary/#convolutional_neural_network">Convolutional Neural Network (CNN)</a>
 to classify <a href="https://www.cs.toronto.edu/~kriz/cifar.html">CIFAR-10 images</a> using the Keras Sequential API.
