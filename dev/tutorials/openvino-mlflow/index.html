@@ -328,6 +328,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#setup" class="md-nav__link">
     Setup
   </a>
@@ -512,6 +519,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#setup" class="md-nav__link">
     Setup
   </a>
@@ -597,6 +611,10 @@
                 
                 
                 <h1 id="image-classification-with-mlflow-and-intel-openvino">Image classification with MLFlow and Intel OpenVINO</h1>
+<h2 id="introduction">Introduction</h2>
+<p>Analyzing the costs of deploying and operating ML models in production environments is a very important aspect of MLOps and Machine Learning projects. If not carefully considered, serving ML models can incur significant infrastructure and maintenance related costs, especially with bigger models. FuseML greatly simplifies the process of exploring various ML model serving platforms, as well as running inference performance testing, in order to identify a configuration that yields the ratio of cost vs. performance that best matches your ML model and business requirements.</p>
+<p>This tutorial will showcase FuseML extensions that can be used to integrate Intel OpenVINO technologies into your MLOps project pipeline, more specifically the <a href="https://docs.openvino.ai/latest/openvino_docs_MO_DG_Deep_Learning_Model_Optimizer_DevGuide.html">OpenVINO Model Optimizer</a> and the <a href="https://docs.openvino.ai/latest/openvino_docs_ovms.html">Model Server</a>.</p>
+<p>You'll deploy a FuseML workflow to train a CNN model on the CIFAR-10 dataset and then serve it using three different ML serving tools and configurations. Afterwards, you'll run some performance testing on the deployed inference servers and interpret the results.</p>
 <h2 id="setup">Setup</h2>
 <h3 id="infrastructure">Infrastructure</h3>
 <p>This tutorial uses a GKE cluster explicitly configured to have Cascade or Skylake generation Intel processors, which are better suited for Intel accelerated ML workloads, but it should work on any other Kubernetes cluster. </p>
@@ -784,11 +802,14 @@ Saving new username into config file as current username.
 </li>
 <li>
 <p>Create a FuseML workflow:</p>
-<p>This workflow:
-- 3 prediction services
-- OVMS model needs conversion
-- CPU requests for training and OVMS serving, can be changed
-- training for 30 epochs, will take about 40 minutes, can be changed</p>
+<p>Before configuring the FuseML workflow used in this tutorial, take some time to explore it by looking at its definition in the <code>examples/workflows/mlflow-multi-e2e.yaml</code> file. Observe the following:</p>
+<ul>
+<li>the workflow has 3 different predictor steps, each one targeting a different serving solution (OVMS, KServe and Seldon Core). They all take in the same model artifact that comes out of the training step.</li>
+<li>the OVMS predictor needs the model to be converted to the Intel IR (Intermediate Representation) format. This is facilitated by a converter step.</li>
+<li>there are explicit CPU resource requests specified for the training and OVMS serving steps. They are meant to speed up the training process and to give the OVMS predictor access to an entire vCPU. Feel free to edit the workflow and change the resource requirements to fit your scenario. Note that the Kubernetes cluster needs to have these resources available, otherwise the workflow will fail because the step containers cannot be scheduled.</li>
+<li>the default values for the workflow input parameters specify training the model for 30 epochs. This will take approximately 40 minutes and yield an accuracy close to 0.8. You can modify these parameters to experiment with different values.</li>
+</ul>
+<p>To configure the FuseML workflow:</p>
 <div class="highlight"><pre><span></span><code>$ fuseml workflow create examples/workflows/mlflow-multi-e2e.yaml
 Workflow <span class="s2">&quot;mlflow-multi-e2e&quot;</span> successfully created
 </code></pre></div>
@@ -828,7 +849,7 @@ all services. In our case, this is <code>http://tekton.34.118.93.249.nip.io</cod
 <h3 id="validating-the-deployed-model">Validating the Deployed Model</h3>
 <p>Before querying the served model for predictions, lets take a look at MLflow for detailed information about
 the model, such as its accuracy, loss, training parameters, etc.</p>
-<p>The MLflow dashboard is available at the <code>http://mlflow.&lt;FUSEML_DOMAIN&gt;</code> URL printed during installation, more specifically at <code>http://mlflow.34.118.93.249.nip.io</code> in our particular case). The <code>keras-cifar10</code> MLFlow experiment contains all tracking information about the model being trained by our workflow. </p>
+<p>The MLflow dashboard is available at the <code>http://mlflow.&lt;FUSEML_DOMAIN&gt;</code> URL printed during installation, more specifically at <code>http://mlflow.34.118.93.249.nip.io</code> in our particular case. The <code>keras-cifar10</code> MLFlow experiment contains all tracking information about the model being trained by our workflow. </p>
 <p>For example:</p>
 <figure>
 <p><img alt="MLflow Time Graph" src="../img/openvino-mlflow/mlflow1.png" />
