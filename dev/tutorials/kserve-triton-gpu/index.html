@@ -42,6 +42,8 @@
     
       <link rel="stylesheet" href="../../stylesheets/extra.css">
     
+      <link rel="stylesheet" href="../../vendor/featherlight-v.1.7.14/release/featherlight.min.css">
+    
     
       
 
@@ -1225,8 +1227,8 @@ the model, such as its accuracy, loss, training parameters, etc.</p>
 <p>MLflow should be available at <code>http://mlflow.&lt;FUSEML_DOMAIN&gt;</code>.</p>
 <p>For example:</p>
 <figure>
-<p><img alt="MLflow" src="../img/kserve-triton-gpu/mlflow.png" />
-  </p>
+<p><a data-featherlight="../img/kserve-triton-gpu/mlflow.png" href="#"><img alt="MLflow" src="../img/kserve-triton-gpu/mlflow.png" />
+  </a></p>
 <figcaption>Training metrics on CPU</figcaption>
 </figure>
 <p>Note the accuracy (about 70%) and the training duration (about 4 minutes) for 10 epochs.</p>
@@ -1245,16 +1247,16 @@ dashboard (<code>http://kserve-web-app.&lt;FUSEML_DOMAIN&gt;/</code>) which also
 information such as the status of the deployment, logs, etc.</p>
 <p>For example:</p>
 <figure>
-<p><img alt="KSserve Dashboard" src="../img/kserve-triton-gpu/kserve.png" />
-  </p>
+<p><a data-featherlight="../img/kserve-triton-gpu/kserve.png" href="#"><img alt="KSserve Dashboard" src="../img/kserve-triton-gpu/kserve.png" />
+  </a></p>
 <figcaption>KServe Dashboard</figcaption>
 </figure>
 <p>To validate the model, we need to send a request containing an image so the model can to predict its class.</p>
 <p>The json file included in the <code>fuseml/examples</code> repository contains a sample request that represents the
 following deer image:</p>
 <figure>
-<p><img alt="Deer" src="../img/kserve-triton-gpu/deer.png" width="300" />
-  </p>
+<p><a data-featherlight="../img/kserve-triton-gpu/deer.png" href="#"><img alt="Deer" src="../img/kserve-triton-gpu/deer.png" width="300" />
+  </a></p>
 <figcaption>Deer Sample Image</figcaption>
 </figure>
 <p>Run the following command to send the request to the application URL:</p>
@@ -1398,16 +1400,16 @@ Workflow <span class="s2">&quot;mlflow-e2e-gpu&quot;</span> assigned to codeset 
 training metrics.</p>
 <p>For example:</p>
 <figure>
-<p><img alt="MLflow-GPU" src="../img/kserve-triton-gpu/gpu-mlflow.png" />
-  </p>
+<p><a data-featherlight="../img/kserve-triton-gpu/gpu-mlflow.png" href="#"><img alt="MLflow-GPU" src="../img/kserve-triton-gpu/gpu-mlflow.png" />
+  </a></p>
 <figcaption>Training metrics on GPU</figcaption>
 </figure>
 <p>With the increased number of epochs, we can see that the trained model have reached an accuracy of 96% while
 spending the same amount of time on training!</p>
 <p>MLflow also allows comparing other metrics by selecting both runs and clicking on the <code>Compare</code> button.</p>
 <figure>
-<p><img alt="MLflow-Compare" src="../img/kserve-triton-gpu/mlflow-compare.png" />
-  </p>
+<p><a data-featherlight="../img/kserve-triton-gpu/mlflow-compare.png" href="#"><img alt="MLflow-Compare" src="../img/kserve-triton-gpu/mlflow-compare.png" />
+  </a></p>
 <figcaption>Comparing metrics on MLflow</figcaption>
 </figure>
 <p>List the FuseML applications:</p>
@@ -1576,6 +1578,10 @@ GPU can speed up the training process.</p>
       <script src="../../assets/javascripts/bundle.b1047164.min.js"></script>
       
         <script src="../../javascripts/extra.js"></script>
+      
+        <script src="../../vendor/jquery-3.6.0.min.js"></script>
+      
+        <script src="../../vendor/featherlight-v.1.7.14/release/featherlight.min.js"></script>
       
     
   </body>

@@ -19,10 +19,3 @@ window.addEventListener("DOMContentLoaded", function() {
     };
     xhr.send();
 });
-
-// Add image zoom on click for every image tagged with `.zoom`
-document.querySelectorAll('.zoom').forEach(item => {
-    item.addEventListener('click', function () {
-        this.classList.toggle('image-zoom-large');
-    })
-});

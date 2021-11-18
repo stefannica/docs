@@ -42,6 +42,8 @@
     
       <link rel="stylesheet" href="../../stylesheets/extra.css">
     
+      <link rel="stylesheet" href="../../vendor/featherlight-v.1.7.14/release/featherlight.min.css">
+    
     
       
 
@@ -618,40 +620,41 @@
 <h2 id="setup">Setup</h2>
 <h3 id="infrastructure">Infrastructure</h3>
 <p>This tutorial uses a GKE cluster explicitly configured to have Cascade or Skylake generation Intel processors, which are better suited for Intel accelerated ML workloads, but it should work on any other Kubernetes cluster. </p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The FuseML workflow used in this tutorial includes some steps that make use of explicit CPU resource requests. For this reason, it is recommended that the Kubernetes nodes have at least 2 vCPUs each, preferably 4, otherwise the workflow steps might be stuck because they cannot be scheduled due to resource and placement constraints. The alternative, if an acceptable number of CPUs cannot be ensured for the Kubernetes nodes, is to edit the FuseML workflow to reduce or even eliminate the explicit CPU resource requirements. The cluster used in this tutorial has 2 nodes, each with 4 vCPUs.</p>
-</div>
+<p>NOTE: the FuseML workflow used in this tutorial includes some steps that make use of explicit CPU resource requests. For this reason, it is recommended that the Kubernetes nodes have at least 2 vCPUs each, preferably 4, otherwise the workflow steps might be stuck because they cannot be scheduled due to resource and placement constraints. The alternative, if an acceptable number of CPUs cannot be ensured for the Kubernetes nodes, is to edit the FuseML workflow to reduce or even eliminate the explicit CPU resource requirements. The cluster used in this tutorial has 2 nodes, each with 4 vCPUs.</p>
 <p>Creating a GKE cluster using the <a href="https://console.cloud.google.com/kubernetes/">GCP console</a> is a straightforward process, captured in the following screenshots. Note that we explicitly selected the N2 node type in the machine configuration to get access to the class of Intel CPUs that is best suited for OpenVINO.</p>
-<p><img alt="GKE Cluster Basics" class="zoom" src="../img/openvino-mlflow/gke1.png" /></p>
 <figure>
-<p><img alt="GKE Node Pool" class="zoom" src="../img/openvino-mlflow/gke2.png" />
-  </p>
+<p><a data-featherlight="../img/openvino-mlflow/gke1.png" href="#"><img alt="GKE Cluster Basics" src="../img/openvino-mlflow/gke1.png" />
+  </a></p>
+<figcaption>GKE Cluster Basic Configuration Settings</figcaption>
+</figure>
+<figure>
+<p><a data-featherlight="../img/openvino-mlflow/gke2.png" href="#"><img alt="GKE Node Pool" src="../img/openvino-mlflow/gke2.png" />
+  </a></p>
 <figcaption>GKE Cluster Node Pool Configuration Settings</figcaption>
 </figure>
 <figure>
-<p><img alt="GKE Nodes" class="zoom" src="../img/openvino-mlflow/gke3.png" />
-  </p>
+<p><a data-featherlight="../img/openvino-mlflow/gke3.png" href="#"><img alt="GKE Nodes" src="../img/openvino-mlflow/gke3.png" />
+  </a></p>
 <figcaption>GKE Cluster Node Configuration Settings</figcaption>
 </figure>
 <p>Once the GKE cluster is deployed, you'll need the GCP SDK installed on your workstation to access its credentials. The installation process is thoroughly covered in <a href="https://cloud.google.com/sdk/docs/install">the official docs</a>.</p>
 <p>To initialize the GCP SDK and authenticate with the same GCP credentials used to deploy the GKE cluster:</p>
-<div class="highlight"><pre><span></span><code>$ gcloud init
+<div class="highlight"><pre><span></span><code>gcloud init
 </code></pre></div>
 <p>To retrieve the GKE kubernetes configuration (make sure you use the same project name and zone as the deployed cluster):</p>
-<div class="highlight"><pre><span></span><code>$ gcloud container clusters get-credentials fuseml --zone europe-central2-a --project fuseml
+<div class="highlight"><pre><span></span><code>gcloud container clusters get-credentials fuseml --zone europe-central2-a --project fuseml
 Fetching cluster endpoint and auth data.
 kubeconfig entry generated <span class="k">for</span> fuseml.
 </code></pre></div>
 <p>With the kubernetes configuration properly configured, you should now be able to access the cluster:</p>
-<div class="highlight"><pre><span></span><code>$ kubectl get node
+<div class="highlight"><pre><span></span><code>kubectl get node
 NAME                              STATUS   ROLES    AGE     VERSION
 gke-fuseml-fuseml-7e908893-69wp   Ready    &lt;none&gt;   2m15s   v1.20.10-gke.1600
 gke-fuseml-fuseml-7e908893-cmjr   Ready    &lt;none&gt;   2m17s   v1.20.10-gke.1600
 </code></pre></div>
 <h3 id="fuseml">FuseML</h3>
 <p>With the Kubernetes cluster set up, FuseML can be installed as covered in the <a href="../../quickstart/">Quick Start</a> section:</p>
-<div class="highlight"><pre><span></span><code>$ fuseml-installer install
+<div class="highlight"><pre><span></span><code>fuseml-installer install
 
 🚢 FuseML installing...
 
@@ -694,12 +697,12 @@ System domain: <span class="m">34</span>.118.93.249.nip.io
 <p>Follow the instructions printed by the installer to copy the CLI binary and set the <code>FUSEML_SERVER_URL</code> environment variable to point to the FuseML installation. This is required to interact with the FuseML instance later through the FuseML CLI:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># alternatively, if you don&#39;t have sudo privileges and your PATH is set</span>
 <span class="c1"># to include the ~/bin location, you can run: cp fuseml ~/bin</span>
-$ sudo cp fuseml /usr/local/bin
-$ <span class="nb">export</span> <span class="nv">FUSEML_SERVER_URL</span><span class="o">=</span>http://fuseml-core.34.118.93.249.nip.io
+sudo cp fuseml /usr/local/bin
+<span class="nb">export</span> <span class="nv">FUSEML_SERVER_URL</span><span class="o">=</span>http://fuseml-core.34.118.93.249.nip.io
 </code></pre></div>
 <p>Also take note of the URLs printed by the installer for the Gitea and Tekton built-in components. You can access these at any given time to get a detailed view of the underlying FuseML codesets and workflows, or to debug any problems that may appear.</p>
 <p>In addition to FuseML and its builtin components, we also need MLFlow, the OpenVINO Model Server operator and two other prediction serving platforms, KServe and Seldon Core, that we'll use to run performance benchmark and compare results. All these tools can be installed through the use of FuseML installer extensions:</p>
-<div class="highlight"><pre><span></span><code>$ fuseml-installer extensions --add mlflow,ovms,kserve,seldon-core
+<div class="highlight"><pre><span></span><code>fuseml-installer extensions --add mlflow,ovms,kserve,seldon-core
 
 🚢 FuseML handling the extensions...
 .
@@ -738,7 +741,7 @@ $ <span class="nb">export</span> <span class="nv">FUSEML_SERVER_URL</span><span 
 </code></pre></div>
 <p>Some of the installed tools, like MLFlow and KServe, also feature dashboards that can be accessed to view detailed information about the ML artifacts and processes orchestrated by FuseML. Their URLs are also printed by the FuseML installer, as shown above.</p>
 <p>The following FuseML CLI command verifies that all the AI/ML tools required for this tutorial have been installed and registered with the FuseML Extension Registry:</p>
-<div class="highlight"><pre><span></span><code>$ fuseml extension list
+<div class="highlight"><pre><span></span><code>fuseml extension list
 +--------------+-----------------------+---------+------+-------------------------------+-------------------------------------------+----------------------------+
 <span class="p">|</span> ID           <span class="p">|</span> PRODUCT               <span class="p">|</span> VERSION <span class="p">|</span> ZONE <span class="p">|</span> SERVICES                      <span class="p">|</span> ENDPOINTS                                 <span class="p">|</span> CREDENTIALS                <span class="p">|</span>
 +--------------+-----------------------+---------+------+-------------------------------+-------------------------------------------+----------------------------+
@@ -794,9 +797,9 @@ Saving new username into config file as current username.
 </code></pre></div>
 <p>The codeset and its contents can be explored in the Gitea dashboard by following the printed URL, as shown below.</p>
 <p><figure markdown> 
-  <img alt="Gitea Codeset" src="../img/openvino-mlflow/gitea.png" />
+  <a data-featherlight="../img/openvino-mlflow/gitea.png" href="#"><img alt="Gitea Codeset" src="../img/openvino-mlflow/gitea.png" />
   <figcaption>Codeset Details in the Gitea Dashboard</figcaption>
-</figure></p>
+</figure></a></p>
 <p>The Keras codeset includes a <code>MLproject</code> file. This is an MLFlow convention used to specify software dependencies, entrypoints and input parameters for the code present in the codeset. This vital piece of information is leveraged by the FuseML workflow that will be configured at the next step to determine automatically which software packages it needs to install and how to run the code in the codeset to train the Keras model.</p>
 </li>
 <li>
@@ -823,7 +826,7 @@ Workflow <span class="s2">&quot;mlflow-multi-e2e&quot;</span> assigned to codese
 <p>Wait for the workflow run to finish running:</p>
 <p>By assigning the workflow to the codeset, a workflow run will be created. You can check the status
 of the workflow run by running the following command:</p>
-<div class="highlight"><pre><span></span><code>$ fuseml workflow list-runs
+<div class="highlight"><pre><span></span><code>fuseml workflow list-runs
 +----------------------------+------------------+----------------+------------+------------------+
 <span class="p">|</span> NAME                       <span class="p">|</span> WORKFLOW         <span class="p">|</span> STARTED        <span class="p">|</span> DURATION   <span class="p">|</span> STATUS           <span class="p">|</span>
 +----------------------------+------------------+----------------+------------+------------------+
@@ -835,14 +838,14 @@ the dashboard can be accessed was printed during the FuseML installation and has
 <code>http://tekton.&lt;FUSEML_DOMAIN&gt;</code>, where <code>FUSEML_DOMAIN</code> is the common <em>.nip.io</em> domain name used for
 all services. In our case, this is <code>http://tekton.34.118.93.249.nip.io</code>.</p>
 <p><figure markdown> 
-  <img alt="Workflow WIP In Tekton" src="../img/openvino-mlflow/tekton-wip.png" />
+  <a data-featherlight="../img/openvino-mlflow/tekton-wip.png" href="#"><img alt="Workflow WIP In Tekton" src="../img/openvino-mlflow/tekton-wip.png" />
   <figcaption>View of the Workflow in Progress in the Tekton Dashboard</figcaption>
-</figure></p>
+</figure></a></p>
 <p>Aside from the long training time, note that since this is the first time the workflow is running, it will build a docker image including the software dependencies for training the model which may take a while. However, consecutive runs will skip that step as long as the dependencies are kept the same.</p>
 <p><figure markdown> 
-  <img alt="Workflow Done In Tekton" src="../img/openvino-mlflow/tekton-done.png" />
+  <a data-featherlight="../img/openvino-mlflow/tekton-done.png" href="#"><img alt="Workflow Done In Tekton" src="../img/openvino-mlflow/tekton-done.png" />
   <figcaption>View of the Completed Workflow in the Tekton Dashboard</figcaption>
-</figure></p>
+</figure></a></p>
 </li>
 </ol>
 <h3 id="validating-the-deployed-model">Validating the Deployed Model</h3>
@@ -851,18 +854,18 @@ the model, such as its accuracy, loss, training parameters, etc.</p>
 <p>The MLflow dashboard is available at the <code>http://mlflow.&lt;FUSEML_DOMAIN&gt;</code> URL printed during installation, more specifically at <code>http://mlflow.34.118.93.249.nip.io</code> in our particular case. The <code>keras-cifar10</code> MLFlow experiment contains all tracking information about the model being trained by our workflow. </p>
 <p>For example:</p>
 <figure>
-<p><img alt="MLflow Time Graph" src="../img/openvino-mlflow/mlflow1.png" />
-  </p>
+<p><a data-featherlight="../img/openvino-mlflow/mlflow1.png" href="#"><img alt="MLflow Time Graph" src="../img/openvino-mlflow/mlflow1.png" />
+  </a></p>
 <figcaption>Model Training Metrics Plotted Over Time</figcaption>
 </figure>
 <figure>
-<p><img alt="MLflow Epochs Graph" src="../img/openvino-mlflow/mlflow2.png" />
-  </p>
+<p><a data-featherlight="../img/openvino-mlflow/mlflow2.png" href="#"><img alt="MLflow Epochs Graph" src="../img/openvino-mlflow/mlflow2.png" />
+  </a></p>
 <figcaption>Model Training Metrics Plotted Over Number of Epochs</figcaption>
 </figure>
 <p>Note the accuracy (about 80%) and the training duration (about 40 minutes) for 30 epochs. Also note that the model is converging nicely, indicated by how the two curves, the training and evaluation accuracy, are almost fully aligned.</p>
 <p>With the successful execution of the workflow, three new FuseML applications should have been created, one for each available prediction serving platform. Listing the FuseML applications will show the URLs where the prediction servers can receive inference requests:</p>
-<div class="highlight"><pre><span></span><code>$ fuseml application list
+<div class="highlight"><pre><span></span><code>fuseml application list
 +----------------+-----------+---------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------+------------------+
 <span class="p">|</span> NAME           <span class="p">|</span> TYPE      <span class="p">|</span> DESCRIPTION                                                                                             <span class="p">|</span> URL                                                                                                                       <span class="p">|</span> WORKFLOW         <span class="p">|</span>
 +----------------+-----------+---------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------+------------------+
@@ -875,18 +878,18 @@ the model, such as its accuracy, loss, training parameters, etc.</p>
 dashboard (<code>http://kserve-web-app.&lt;FUSEML_DOMAIN&gt;/</code>, in our case <code>http://kserve-web-app.34.118.93.249.nip.io/</code>) which also includes more detailed information, such as the status of the deployment, logs, etc.</p>
 <p>For example:</p>
 <figure>
-<p><img alt="KSserve Dashboard" src="../img/openvino-mlflow/kserve.png" />
-  </p>
+<p><a data-featherlight="../img/openvino-mlflow/kserve.png" href="#"><img alt="KSserve Dashboard" src="../img/openvino-mlflow/kserve.png" />
+  </a></p>
 <figcaption>KFServing Dashboard</figcaption>
 </figure>
 <p>To validate the model, we need to send one or more requests containing images to the prediction service and check if the model classifies them correctly. Some sample images are included in <code>examples/prediction/images/cifar10</code> folder for this purpose. To simplify the process of converting them in the right format and constructing the prediction requests, we'll use some helper scripts available in the <code>examples/prediction/images</code> folder. First, we need to install some requirements:</p>
-<div class="highlight"><pre><span></span><code>$ cd examples/prediction/images
-$ python3 -m venv .venv
-$ source .venv/bin/activate
-$ pip install -r requirements.txt 
+<div class="highlight"><pre><span></span><code>cd examples/prediction/images
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt 
 </code></pre></div>
 <p>Before we can run the actual prediction requests, we need to convert the images in the sample set to a numpy dataset format:</p>
-<div class="highlight"><pre><span></span><code>$ python img_to_npy.py --image_dir cifar10 --label_file cifar10/images.txt --input_height 32 --input_width 32 --resize --output_file dataset.npy --output_label_file labels.npy
+<div class="highlight"><pre><span></span><code>python img_to_npy.py --image_dir cifar10 --label_file cifar10/images.txt --input_height 32 --input_width 32 --resize --output_file dataset.npy --output_label_file labels.npy
 
 -------------------------------------
 3.6.13 (default, Mar 10 2021, 18:30:35) [GCC]
@@ -916,7 +919,7 @@ $ pip install -r requirements.txt
 <ul>
 <li>
 <p>for OVMS (note that we need to use a batch size of 1, due to a <a href="https://github.com/openvinotoolkit/openvino/issues/8607">current limitation in the OVMS operator 0.1 version</a>):</p>
-<div class="highlight"><pre><span></span><code>$ python rest_serving_client.py --rest_url http://cifar10-ovms.ovms.34.118.93.249.nip.io --model_name default --images_numpy_path dataset.npy --labels_numpy_path labels.npy --transpose_input False  --batchsize 1 --classes classes.json
+<div class="highlight"><pre><span></span><code>python rest_serving_client.py --rest_url http://cifar10-ovms.ovms.34.118.93.249.nip.io --model_name default --images_numpy_path dataset.npy --labels_numpy_path labels.npy --transpose_input False  --batchsize 1 --classes classes.json
 Image data range: 0 : 255
 Start processing:
   Model name: default
@@ -979,7 +982,7 @@ Classification accuracy: 70.00
 </li>
 <li>
 <p>for KServe:</p>
-<div class="highlight"><pre><span></span><code>$ python rest_serving_client.py --rest_url http://cifar10-kserve.fuseml-workloads.34.118.93.249.nip.io --model_name cifar10-kserve --images_numpy_path dataset.npy --labels_numpy_path labels.npy --transpose_input False  --batchsize 10 --classes classes.json
+<div class="highlight"><pre><span></span><code>python rest_serving_client.py --rest_url http://cifar10-kserve.fuseml-workloads.34.118.93.249.nip.io --model_name cifar10-kserve --images_numpy_path dataset.npy --labels_numpy_path labels.npy --transpose_input False  --batchsize 10 --classes classes.json
 Image data range: 0 : 255
 Start processing:
   Model name: cifar10-kserve
@@ -1015,7 +1018,7 @@ Classification accuracy: 70.00
 </li>
 <li>
 <p>finally, for Seldon Core:</p>
-<div class="highlight"><pre><span></span><code>$ python rest_serving_client.py --rest_url http://cifar10-seldon.seldon.34.118.93.249.nip.io/seldon/fuseml-workloads/cifar10-seldon --model_name cifar10-seldon --images_numpy_path dataset.npy --labels_numpy_path labels.npy --transpose_input False  --batchsize 10 --classes classes.json
+<div class="highlight"><pre><span></span><code>python rest_serving_client.py --rest_url http://cifar10-seldon.seldon.34.118.93.249.nip.io/seldon/fuseml-workloads/cifar10-seldon --model_name cifar10-seldon --images_numpy_path dataset.npy --labels_numpy_path labels.npy --transpose_input False  --batchsize 10 --classes classes.json
 Image data range: 0 : 255
 Start processing:
   Model name: cifar10-seldon
@@ -1053,7 +1056,7 @@ Classification accuracy: 70.00
 <h3 id="benchmarking-the-inference-services">Benchmarking the Inference Services</h3>
 <p>To be able to compare the performance of the different model serving tools, we can benchmark the inference services.</p>
 <p>Run the following command to create a Job workload that will benchmark the OVMS inference service:</p>
-<div class="highlight"><pre><span></span><code>$ kubectl apply -f cifar10/perf.yaml
+<div class="highlight"><pre><span></span><code>kubectl apply -f cifar10/perf.yaml
 job.batch/load-test created
 configmap/load-test-cfg created
 </code></pre></div>
@@ -1205,6 +1208,10 @@ Error Set:
       <script src="../../assets/javascripts/bundle.b1047164.min.js"></script>
       
         <script src="../../javascripts/extra.js"></script>
+      
+        <script src="../../vendor/jquery-3.6.0.min.js"></script>
+      
+        <script src="../../vendor/featherlight-v.1.7.14/release/featherlight.min.js"></script>
       
     
   </body>
