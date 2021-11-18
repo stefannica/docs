@@ -623,11 +623,7 @@
 <p>The FuseML workflow used in this tutorial includes some steps that make use of explicit CPU resource requests. For this reason, it is recommended that the Kubernetes nodes have at least 2 vCPUs each, preferably 4, otherwise the workflow steps might be stuck because they cannot be scheduled due to resource and placement constraints. The alternative, if an acceptable number of CPUs cannot be ensured for the Kubernetes nodes, is to edit the FuseML workflow to reduce or even eliminate the explicit CPU resource requirements. The cluster used in this tutorial has 2 nodes, each with 4 vCPUs.</p>
 </div>
 <p>Creating a GKE cluster using the <a href="https://console.cloud.google.com/kubernetes/">GCP console</a> is a straightforward process, captured in the following screenshots. Note that we explicitly selected the N2 node type in the machine configuration to get access to the class of Intel CPUs that is best suited for OpenVINO.</p>
-<figure>
-<p><img alt="GKE Cluster Basics" class="zoom" src="../img/openvino-mlflow/gke1.png" />
-  </p>
-<figcaption>GKE Cluster Basic Configuration Settings</figcaption>
-</figure>
+<p><img alt="GKE Cluster Basics" class="zoom" src="../img/openvino-mlflow/gke1.png" /></p>
 <figure>
 <p><img alt="GKE Node Pool" class="zoom" src="../img/openvino-mlflow/gke2.png" />
   </p>
