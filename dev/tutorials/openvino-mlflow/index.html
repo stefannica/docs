@@ -268,7 +268,7 @@
   
     <li class="md-nav__item">
       <a href="../seldon-core/" class="md-nav__link">
-        Logistic Regression with MLFlow & Seldon Core
+        Logistic Regression with MLFlow & Seldon-Core
       </a>
     </li>
   
@@ -809,6 +809,7 @@ Saving new username into config file as current username.
 <p>Before configuring the FuseML workflow used in this tutorial, take some time to explore it by looking at its definition in the <code>examples/workflows/mlflow-multi-e2e.yaml</code> file. Observe the following:</p>
 <ul>
 <li>the workflow has 3 different predictor steps, each one targeting a different serving solution (OVMS, KServe and Seldon Core). They all take in the same model artifact that comes out of the training step.</li>
+<li>the <code>app_name</code> input parameter is explicitly set for all predictor steps to ensure reproducible application names for the prediction services deployed by the workflow. These are also reflected in the URLs where prediction services accept inference requests.</li>
 <li>the OVMS predictor needs the model to be converted to the Intel IR (Intermediate Representation) format. This is facilitated by a converter step.</li>
 <li>there are explicit CPU resource requests specified for the training and OVMS serving steps. They are meant to speed up the training process and to give the OVMS predictor access to an entire vCPU. Feel free to edit the workflow and change the resource requirements to fit your scenario. Note that the Kubernetes cluster needs to have these resources available, otherwise the workflow will fail because the step containers cannot be scheduled.</li>
 <li>the default values for the workflow input parameters specify training the model for 30 epochs. This will take approximately 40 minutes and yield an accuracy close to 0.8. You can modify these parameters to experiment with different values.</li>
@@ -851,7 +852,7 @@ all services. In our case, this is <code>http://tekton.34.118.93.249.nip.io</cod
 </li>
 </ol>
 <h3 id="validating-the-deployed-model">Validating the Deployed Model</h3>
-<p>Before querying the served model for predictions, lets take a look at MLflow for detailed information about
+<p>Before querying the served model for predictions, let's take a look at MLflow for detailed information about
 the model, such as its accuracy, loss, training parameters, etc.</p>
 <p>The MLflow dashboard is available at the <code>http://mlflow.&lt;FUSEML_DOMAIN&gt;</code> URL printed during installation, more specifically at <code>http://mlflow.34.118.93.249.nip.io</code> in our particular case. The <code>keras-cifar10</code> MLFlow experiment contains all tracking information about the model being trained by our workflow. </p>
 <p>For example:</p>
