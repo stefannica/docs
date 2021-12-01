@@ -697,7 +697,7 @@
 <p>The third and final step in the workflow is responsible for creating a KServe prediction service that can be used to run predictions against the model trained and stored at the previous step. The service instance will be recorded by FuseML in the form of a FuseML Application. The step has the following attributes:</p>
 <ul>
 <li><code>name</code>: uniquely identifies this step in the workflow.</li>
-<li><code>image</code>: the container image implementing the workflow step. In our case, this is the <a href="kserve-predictor.md">KServe predictor step</a> container image that is maintained by the FuseML team.</li>
+<li><code>image</code>: the container image implementing the workflow step. In our case, this is the <a href="../kserve-predictor/">KServe predictor step</a> container image that is maintained by the FuseML team.</li>
 <li><code>predictor</code> parameter: this is a KServe predictor specific parameter that can be used to configure the type of KServe predictor engine used for the prediction service.</li>
 <li><code>app_name</code> parameter: this is another KServe predictor specific parameter. It determines the name of the FuseML application used to represent the KServe prediction service. Its value also determines the prediction URL as well as the names of the Kubernetes resources created by the KServe predictor. Our example uses an expression to dynamically sets the <code>app_name</code> parameter to the name and project of the MLflow codeset used as workflow input.</li>
 <li><code>prediction-url</code> output: the URL exposed by the KServe prediction service where prediction requests can be sent to the served ML model.</li>
@@ -707,9 +707,9 @@
 <p>A set of container images implementing various workflow extensions are maintained by the FuseML team. If you are interested in using a specific workflow extension, you can find the container image implementing it in the <a href="https://github.com/fuseml/extensions/tree/main/images">FuseML extensions repository</a>. They can be used in FuseML workflows to easily integrate with 3rd party tools and services providing features like ML experiment tracking, artifact storage, prediction services, and more: </p>
 <ul>
 <li><a href="../mlflow-builder/">MLFlow builder</a> - builds python runtime environment container images for codesets that are structured according to the <a href="https://www.mlflow.org/docs/latest/projects.html">MLFlow Project format</a>.</li>
-<li><a href="kserve-predictor.md">KServe predictor</a> - deploys models using the <a href="https://kserve.github.io/website/">KServe inference platform</a>.</li>
-<li><a href="seldon-core-predictor.md">Seldon Core predictor</a> - deploys ML models using the <a href="https://docs.seldon.io/projects/seldon-core/en/latest/">Seldon Core MLOps platform</a>.</li>
-<li><a href="ovms-converter.md">OVMS converter</a> and <a href="ovms-predictor.md">predictor</a> - can be used to optimize and convert ML models into the Intel IR format with the <a href="https://docs.openvino.ai/latest/openvino_docs_MO_DG_Deep_Learning_Model_Optimizer_DevGuide.html">OpenVINO Model Optimizer</a> and then deploy them using the <a href="https://docs.openvino.ai/latest/openvino_docs_ovms.html">OpenVINO Model Server</a>.</li>
+<li><a href="../kserve-predictor/">KServe predictor</a> - deploys models using the <a href="https://kserve.github.io/website/">KServe inference platform</a>.</li>
+<li><a href="../seldon-core-predictor/">Seldon Core predictor</a> - deploys ML models using the <a href="https://docs.seldon.io/projects/seldon-core/en/latest/">Seldon Core MLOps platform</a>.</li>
+<li><a href="../ovms-converter/">OVMS converter</a> and <a href="../ovms-predictor/">predictor</a> - can be used to optimize and convert ML models into the Intel IR format with the <a href="https://docs.openvino.ai/latest/openvino_docs_MO_DG_Deep_Learning_Model_Optimizer_DevGuide.html">OpenVINO Model Optimizer</a> and then deploy them using the <a href="https://docs.openvino.ai/latest/openvino_docs_ovms.html">OpenVINO Model Server</a>.</li>
 </ul>
 
               
