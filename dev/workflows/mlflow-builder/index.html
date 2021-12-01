@@ -570,8 +570,7 @@
 <h1 id="mlflow-runtime-environment-builder-extension-for-fuseml-workflows">MLflow runtime environment builder extension for FuseML workflows</h1>
 <h2 id="overview">Overview</h2>
 <p>The <a href="https://www.mlflow.org/docs/latest/projects.html">MLFlow Project format</a> is a flexible way of configuring how to package and execute python ML code in a reproducible way. It allows developers to declaratively specify python package requirements and code execution entry points.</p>
-<p>The Dockerfile and associated files in this folder implement the FuseML MLflow builder workflow step. The container image is based on <a href="https://github.com/GoogleContainerTools/kaniko">Kaniko</a> and leverages the MLflow Project conventions to automate building MLflow runtime environments: container images used for the execution of MLflow augmented python code within a FuseML workflow.</p>
-<p>The MLflow builder works with any codeset that meets the following requirements and conventions:</p>
+<p>The MLflow builder workflow step leverages the MLflow Project conventions to automate building MLflow runtime environments: container images used for the execution of MLflow augmented python code within a FuseML workflow. The MLflow builder works with any codeset that meets the following requirements and conventions:</p>
 <ul>
 <li>an <code>MLproject</code> file is present the codeset's root directory</li>
 <li>python requirements are specified using a <code>conda.yaml</code> file or a <code>requirements.txt</code> file, also present in the codeset's root directory</li>
