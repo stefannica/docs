@@ -13,7 +13,7 @@
     
     
       
-        <title>MLflow runtime environment builder extension for FuseML workflows - FuseML Documentation</title>
+        <title>MLflow builder workflow extension - FuseML Documentation</title>
       
     
     
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              MLflow runtime environment builder extension for FuseML workflows
+              MLflow builder workflow extension
             
           </span>
         </div>
@@ -330,12 +330,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
       
       
       
@@ -370,11 +372,66 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../workflow/mlflow-builder.md" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          MLflow builder workflow extension
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         MLflow builder workflow extension
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    Overview
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-mlflow-builder-step" class="md-nav__link">
+    Using the MLflow Builder Step
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-mlflow-runtime-environment-step" class="md-nav__link">
+    Using the MLflow Runtime Environment Step
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -638,7 +695,8 @@
         <span class="nt">product</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mlflow</span>
         <span class="nt">service_resource</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">s3</span>
 </code></pre></div>
-<p>Note how the <code>builder</code> step output is referenced as the image value for the <code>trainer</code> step and how both steps use the same <code>mlflow-codeset</code> codeset as input. The builder workflow step creates the MLflow environment container image and the trainer step uses it to execute the MLflow code and train the ML model. Also observe how the <code>mlflow-tracking</code> and <code>mlflow-store</code> extensions are used in the <code>trainer</code> step to reference an MLflow tracking server and an artifact store backend configured in the FuseML Extension Registry. This avoids having to configure credentials and other environment variables explicitly in the FuseML workflow. The FuseML workflow engine automatically resolves these references to matching records available in the FuseML Extension Registry and passes the configuration entries in the extension records as environment variables to the workflow step container (i.e. variables like <code>MLFLOW_TRACKING_URI</code> , <code>MLFLOW_S3_ENDPOINT_URL</code>, <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code>).</p>
+<p>Note how the <code>builder</code> step output is referenced as the image value for the <code>trainer</code> step and how both steps use the same <code>mlflow-codeset</code> codeset as input. The builder workflow step creates the MLflow environment container image and the trainer step uses it to execute the MLflow code and train the ML model.</p>
+<p>Also observe how the <code>mlflow-tracking</code> and <code>mlflow-store</code> extensions are used in the <code>trainer</code> step to reference an MLflow tracking server and an artifact store backend configured in the FuseML Extension Registry. This avoids having to configure credentials and other environment variables explicitly in the FuseML workflow. The FuseML workflow engine automatically resolves these references to matching records available in the FuseML Extension Registry and passes the configuration entries in the extension records as environment variables to the workflow step container (i.e. variables like <code>MLFLOW_TRACKING_URI</code> , <code>MLFLOW_S3_ENDPOINT_URL</code>, <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code>).</p>
 
               
             </article>
@@ -648,6 +706,41 @@
       </main>
       
         <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../workflows/" class="md-footer__link md-footer__link--prev" aria-label="Previous: FuseML workflows" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              FuseML workflows
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../../architecture/" class="md-footer__link md-footer__link--next" aria-label="Next: Architecture" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Architecture
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
