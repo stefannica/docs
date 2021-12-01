@@ -684,8 +684,8 @@
 </code></pre></div>
 <p>This is where the workflow's global parameters, inputs and outputs are declared. Currently, the only type of supported input for FuseML workflows and steps is the codeset. In this example:</p>
 <ul>
-<li>the <code>mlflow-codeset</code> input is a codeset that must contain an MLflow project with python code that will be used to train a ML model</li>
-<li>the <code>predictor</code> parameter is used to specify the type of predictor engine used for the KServe prediction service that will be used to serve the model. It has a default value of <code>auto</code>, which will instruct the workflow to automatically select the predictor engine that best fits the trained model</li>
+<li>the <code>mlflow-codeset</code> input is a codeset that contains python code that will be executed in this workflow to train a ML model. For this particular example, the codeset must include an MLflow project that meets the <a href="../mlflow-builder/#overview">MLFlow builder workflow extension requirements</a>, given that it is consumed by an MLflow builder step that is part of this workflow.</li>
+<li>the <code>predictor</code> parameter is used to specify the type of predictor engine used for the KServe prediction service that will be used to serve the model. It has a default value of <code>auto</code>, which will instruct the workflow to automatically select the predictor engine that best fits the trained model.</li>
 <li>the <code>prediction-url</code> output is the URL where the prediction service endpoint can be accessed to run prediction requests against the trained model.</li>
 </ul>
 <p>The inputs, parameters and outputs declared globally are available to all steps in the workflow. In the next sections, we'll see how inputs, parameters and outputs are declared for individual steps and how they are connected to the ones declared globally.</p>
