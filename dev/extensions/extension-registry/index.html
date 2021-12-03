@@ -573,6 +573,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installer-extensions/" class="md-nav__link">
+        FuseML installer extensions
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -744,7 +758,7 @@
 <p>To understand what information is needed to <em>model and register your own instance of AI/ML tool or service as a FuseML extension</em> and then <em>reference it and access it from FuseML workflows</em>, please proceed to the next sections describing the <a href="#extension-records">Extension Record format</a> and the <a href="#referencing-extensions-in-workflows">workflow extension references</a>.</p>
 <p>To explore more on the use-cases for which the Extension Registry was intended, please refer to the <a href="#extension-registry-use-cases">Extension Registry Use Cases section</a>.</p>
 <h2 id="extension-records">Extension Records</h2>
-<p>The structure of the information captured in the Extension Registry (i.e. the Extension Records) is based on common architectural and deployment patterns and abstractions exhibited by and extracted from a wide range of AI/ML tools and services, but is particularly suitable to describe cloud-native applications and services. The Extension Record is represented by a hierarchy of elements (services, endpoints, credentials and configuration) that can be used to model any 3rd party service in a form that can be easily referenced and consumed by FuseML and automated workflows.</p>
+<p>The structure of the information captured in the Extension Registry (i.e. the Extension Records) is based on common architectural and deployment patterns and abstractions exhibited by and extracted from a wide range of AI/ML tools and services, but is particularly suited to describe cloud-native applications and services. The Extension Record is represented by a hierarchy of elements (services, endpoints, credentials and configuration) that can be used to model any 3rd party service in a form that can be easily referenced and consumed by FuseML and automated workflows.</p>
 <p>Below is an example of an Extension Record describing an MLFlow server instance deployed in a Kubernetes cluster. In fact, it is the exact Extension Record that is automatically registered when MLFlow is installed using the FuseML installer.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mlflow</span>
 <span class="nt">product</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mlflow</span>
@@ -1291,13 +1305,13 @@ I will manage buckets, accounts and credentials and add them as extension record
       
       
         
-        <a href="../../architecture/" class="md-footer__link md-footer__link--next" aria-label="Next: Architecture" rel="next">
+        <a href="../installer-extensions/" class="md-footer__link md-footer__link--next" aria-label="Next: FuseML installer extensions" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Architecture
+              FuseML installer extensions
             </div>
           </div>
           <div class="md-footer__button md-icon">
