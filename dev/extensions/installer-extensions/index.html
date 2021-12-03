@@ -794,7 +794,7 @@
 <p>The <code>install</code> and <code>uninstall</code> sections list the steps necessary to install, configure and uninstall the extension. KServe is installed through a combination of Kubernetes manifests and Kustomize files. The following types of installation mechanisms are currently supported:</p>
 <ul>
 <li><code>helm</code> - helm chart</li>
-<li><code>manifest</code> - plain Kubernetes manifest, to be installed using <code>kubectl</code>. All information (including namespace for example) is expected to be present in the manifest file.</li>
+<li><code>manifest</code> - plain Kubernetes manifest, to be installed using <code>kubectl</code>. All information is expected to be present in the manifest file.</li>
 <li><code>kustomize</code> - Kustomize deployment. It can be a URL (i.e. one that works as an input for <code>kubectl -k</code>) or an absolute or relative path to a local directory with Kustomize files.</li>
 <li><code>script</code> - manage the installation/uninstallation through shell scripts. Specific <code>install</code> and <code>uninstall</code> actions need to be provided by way of referencing specific shell scripts.</li>
 </ul>
@@ -857,6 +857,10 @@ The currently supported arguments are:</p>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">watch</span>
 </code></pre></div>
 <p>Some third party AI/ML services, like KServe, come in the form of Kubernetes operators that have associated CRD. To have access to these resources, the workflow steps need to have additional permissions granted to them. The <code>rolerules</code> section can be used to provide the list of permissions (Kubernetes roles) that need to be granted to FuseML workflow steps that need to access the extension. The syntax is the same as for the <a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/">Kubernetes Role object</a>, i.e. it is expected to contain ApiGroups, Resources and Verbs values.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All steps in a FuseML workflow are executed in the <code>fuseml-workloads</code> Kubernetes namespace and in the context of the <code>fuseml-workloads</code> service account. For 3rd party tools that are not installed using installer extensions, or that do not include <code>rolerules</code> in the extension descriptor, the admin must manually add the required permissions to the <code>fuseml-workloads</code> service account. FuseML automatically adds the permissions listed in the <code>rolerules</code> section to the mentioned service account.</p>
+</div>
 <p>For more examples of extension descriptors and how to build them, take a look at the <a href="https://github.com/fuseml/extensions/tree/main/installer">Installer Extension Repository maintained by the FuseML team</a></p>
 <h2 id="installer-extension-repository">Installer Extension Repository</h2>
 <p>Installer extensions have to be organized using a particular directory structure to be recognized by the FuseML installer. A FuseML installer extension repository is a directory (local or remote) containing description files of extensions. Each extension has its own subdirectory that matches the extension name. Mandatory component under each extension subdirectory is the <code>description.yaml</code> file.</p>
