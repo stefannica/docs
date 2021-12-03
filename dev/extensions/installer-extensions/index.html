@@ -532,19 +532,6 @@
     Overview
   </a>
   
-    <nav class="md-nav" aria-label="Overview">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#cli" class="md-nav__link">
-    CLI
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -672,19 +659,6 @@
     Overview
   </a>
   
-    <nav class="md-nav" aria-label="Overview">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#cli" class="md-nav__link">
-    CLI
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -725,29 +699,6 @@
 <p>The FuseML installer can be used for more than installing FuseML itself. It can also be used to manage the installation of third-party tools and services and their subsequent registration in <a href="../extension-registry/">the FuseML Extension Registry</a>, where they can be referenced and accessed from FuseML workflows.</p>
 <p>The installer makes a clear distinction between basic mandatory components and extensions for 3rd party tools, but at the same time provides the "all-in-one" experience of installing everything in one shot. Furthermore, the installer is flexible in that it can be extended dynamically to cover more third-party tools and services that are not included in the default tool stack maintained by the FuseML team, by defining new <a href="#installer-extensions">Installer Extensions</a> and grouping them under a custom <a href="#installer-extension-repository">Installer Extension Repository</a>.</p>
 <p>The <a href="https://github.com/fuseml/extensions/tree/main/installer">default FuseML Installer Extension Repository</a> includes a variety of AI/ML tools that can be installed through the FuseML installer. The repository is maintained by the FuseML team and is updated regularly.</p>
-<h3 id="cli">CLI</h3>
-<ol>
-<li>Implement new option for <code>install</code> command</li>
-</ol>
-<p><code>fuseml-installer install [--extension &lt;name&gt;] [--extension-repository &lt;path&gt;]</code></p>
-<p>This command installs all necessary components AND extensions selected by <code>--extension</code> option. Optionally uses path specified
-  by <code>--extension-repository</code> option as a source for extensions that should be installed. Path could be local directory on URL.</p>
-<ol>
-<li>Implement new command for managing extensions. This could be useful for adding an extension to already configured system.</li>
-</ol>
-<p><code>fuseml-installer extension</code></p>
-<p>This should have several sub commands, like</p>
-<ul>
-<li><code>fuseml-installer extension list</code> - list installed extensions</li>
-<li><code>fuseml-installer extension available [--extension-repository &lt;path&gt;]</code> = list extensions available for installation</li>
-<li><code>fuseml-installer extension add &lt;name&gt; [--extension-repository &lt;path&gt;]</code> - install selected extension</li>
-<li>
-<p><code>fuseml-installer extension remove &lt;name&gt; [--extension-repository &lt;path&gt;]</code> - ubinstalls selected extension</p>
-</li>
-<li>
-<p>Add information about extensions into the fuseml-installer config file</p>
-</li>
-</ul>
 <h2 id="installer-extensions">Installer Extensions</h2>
 <p>An installer extension is represented by a <code>description.yaml</code> YAML file that provides a description of the operations that are needed to install and uninstall a third-party application. The installer extensions are designed to be used with cloud-native applications that can be deployed in a Kubernetes cluster, but they can also be used with other types of infrastructures and deployment models.</p>
 <p>The following is an example of an installer extension descriptor defined for KServe:</p>
