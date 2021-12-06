@@ -9,7 +9,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.0.3">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.0.4">
     
     
       
@@ -17,7 +17,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.62128196.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2a4617e2.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.9204c3b2.min.css">
@@ -690,6 +690,12 @@
 </ul>
 <p>The KServe predictor has a single output: the URL where the prediction service can be accessed to process inference requests.</p>
 <p>The Dockerfile and associated scripts that implement the KServe predictor container image are available in the <a href="https://github.com/fuseml/extensions/tree/main/images/inference-services/kserve">FuseML extensions repository</a>.</p>
+<p>The KServe predictor is featured in a number of FuseML tutorials, such as:</p>
+<ul>
+<li><a href="../../tutorials/kserve-basic/">Logistic Regression with MLFlow &amp; KServe</a></li>
+<li><a href="../../tutorials/kserve-triton-gpu/">Training &amp; Serving ML Models on GPU with NVIDIA Triton</a></li>
+<li><a href="../../tutorials/openvino-mlflow/">Benchmarking ML Models on Intel CPUs with Intel OpenVINO</a></li>
+</ul>
 <h2 id="using-the-kserve-predictor-step">Using the KServe Predictor Step</h2>
 <p>The recommended way to use the KServe predictor step in a FuseML workflow is to have an MLflow trainer step part of the same workflow and to reference its output model as input to the KServe predictor, as shown in the example below.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mlflow-e2e</span>
@@ -747,7 +753,8 @@
     <span class="nt">outputs</span><span class="p">:</span>
       <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">prediction-url</span>
     <span class="nt">extensions</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">s3-storage</span>
+      <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mlflow-s3-store</span>
+        <span class="nt">product</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mlflow</span>
         <span class="nt">service_resource</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">s3</span>
       <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">kserve</span>
         <span class="nt">service_resource</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">kserve-api</span>
@@ -796,7 +803,7 @@
 <li><code>MLFLOW_S3_ENDPOINT_URL</code> - required when the ML model is stored in a custom S3 compatible artifact store such as minio</li>
 <li><code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code> - credentials for the AWS S3 and S3-compatible artifact store</li>
 </ul>
-<p>Observe how the <code>s3-storage</code> extension is used in the <code>predictor</code> step to reference an MLflow artifact store backend registered in the <a href="../../extensions/extension-registry/">FuseML Extension Registry</a>. This avoids having to configure credentials and other environment variables explicitly in the FuseML workflow. The FuseML workflow engine automatically resolves these references to matching records available in the FuseML Extension Registry and passes the configuration entries in the extension records as environment variables to the workflow step container (i.e. variables like <code>MLFLOW_S3_ENDPOINT_URL</code>, <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code>).</p>
+<p>Observe how the <code>mlflow-s3-store</code> extension requirement is used in the <code>predictor</code> step to reference an MLflow artifact store backend registered in the <a href="../../extensions/extension-registry/">FuseML Extension Registry</a>. This avoids having to configure credentials and other environment variables explicitly in the FuseML workflow. The FuseML workflow engine automatically resolves these references to matching records available in the FuseML Extension Registry and passes the configuration entries in the extension records as environment variables to the workflow step container (i.e. variables like <code>MLFLOW_S3_ENDPOINT_URL</code>, <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code>).</p>
 
               
             </article>
@@ -866,10 +873,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.01824240.min.js", "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.ca141e46.min.js", "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.e0abf5b0.min.js"></script>
+      <script src="../../assets/javascripts/bundle.6baa0517.min.js"></script>
       
         <script src="../../javascripts/extra.js"></script>
       
